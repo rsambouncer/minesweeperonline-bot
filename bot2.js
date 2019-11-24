@@ -131,6 +131,7 @@ function loop(a1,b1,level,run){
         else autoauto(1,1,3,false);
     }else{
     	if(face!=="facewin"&&face!=="facedead"){
+          //time to guess \(:/)/
           let blanks = [];
           for(let a=1;a<=16;a++) for(let b=1;b<=30;b++){
               let el = square(a,b);
