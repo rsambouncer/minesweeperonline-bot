@@ -1,5 +1,4 @@
 This is a bot that plays Minesweeper. It is specifically built for minesweeperonline.com
 
-To use it, paste bot.js into the console, start the game (by upcovering a small area), and then press c. The bot will automatically uncover and flag all tiles that it can figure out with 100% certainty. 
+To use it, paste bot2.js into the console, close the console, and press c. Usually, the bot can win expert mode around 25-30% of the time. 
 
-The bot will not make any guesses. If it reaches a point where continuing the game reguires guessing, it will stop.
