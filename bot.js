@@ -1,21 +1,37 @@
-function square(a,b){ //returns the element at a coordinate
-	return document.getElementById(a+"_"+b);
+/*
+Minesweeper bot
+*/
+
+
+
+//returns the element at a coordinate
+function square(a,b){ 
+    return document.getElementById(a+"_"+b);
 }
-function osR(a,b){ //tests if block is outside the playing feild
+
+//tests if block is outside the playing feild
+function osR(a,b){ 
 	if(a<=0||b<=0||a>16||b>30) return true;
 }
-function numB(a,b){ //number of bombs around an uncovered square
+
+//number of bombs around an uncovered square
+function numB(a,b){ 
 	return parseInt(square(a,b).classList[1].substring(4));
 }
-function leftClick(el){ //simulates a left click
+
+//simulates a left click
+function leftClick(el){ 
     el.dispatchEvent(new MouseEvent('mouseup', { 'bubbles': true}));
 }
-function rightClick(el){ //simulates a right click
+
+//simulates a right click
+function rightClick(el){ 
 	el.dispatchEvent(new MouseEvent('mousedown', { 'bubbles': true, "button":2}));
     el.dispatchEvent(new MouseEvent('mouseup', { 'bubbles': true, "button":2}));
 }
 
-function loopAround(a,b,f,g){ //loops around an uncovered square, looking for blank or flagged squares
+//loops around an uncovered square, looking for blank or flagged squares
+function loopAround(a,b,f,g){ 
 	for(let c=-1;c<2;c++) for(let d=-1;d<2;d++){
     	if(osR(a+c,b+d)) continue;
         let el = square(a+c,b+d);
@@ -24,26 +40,29 @@ function loopAround(a,b,f,g){ //loops around an uncovered square, looking for bl
     }
 }
 
+//Automatically flags/uncovers the area around a square if it can figure out how to do so
 function autoLevel1(a,b){
-	let count1 = 0;
+    let count1 = 0;
     let count2 = 0;
     let BB = numB(a,b); if(isNaN(BB)||BB===0) return false;
     loopAround(a,b,()=>{count1++;},()=>{count2++;});
     if(count1===0) return false;
-	if(count2===BB){
+    if(count2===BB){
     	//uncover all blank squares
         loopAround(a,b,leftClick);
         return true;
     }
     if(count1+count2===BB){
-		//flag all blank squares
+	    //flag all blank squares
     	loopAround(a,b,rightClick);
         return true;
     }
     return false;
 }
+
+//Automatically flags/uncovers the area around 2 squares if it can figure out how to do so
 function autoLevel2(a,b,dirH){
-	let countA = numB(a,b);
+    let countA = numB(a,b);
     let countB = numB(a+1-dirH,b+dirH);
     let cA = [];
     let cM = [];
@@ -65,8 +84,8 @@ function autoLevel2(a,b,dirH){
         }
     }
     
-		if(countA===0||countB===0) return false;
-    //either nothing to be done, or needs autoflag
+	if(countA===0||countB===0) return false;
+    //either nothing to be done, or this is a job for autoLevel1
     
     let poss = [false,false,false,false,false,false,false,false,false];
     for(let x=0;x<=cA.length;x++) for(let y=0;y<=cM.length;y++) for(let z=0;z<=cB.length;z++){
@@ -94,8 +113,9 @@ function autoLevel2(a,b,dirH){
 }
 
 function autoauto(a1,b1,level2,run, run2){
+    //I slowed down the bot so the user can see what the bot is doing
 	setTimeout(function(){loop(a1,b1,level2,run,run2);}, 20);
-    //loop(a1,b1,level2,run,run2);
+    //loop(a1,b1,level2,run,run2); //use this line for no delay
 }
 
 function loop(a1,b1,level2,run,run2){
